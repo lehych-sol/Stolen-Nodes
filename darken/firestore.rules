@@ -1,0 +1,24 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn()
+        && request.auth.token.email != null
+        && request.auth.token.email in [
+          'otashblogs@gmail.com'
+        ];
+    }
+
+    match /generations/{documentId} {
+      allow read: if isAdmin();
+      allow create: if isSignedIn()
+        && request.resource.data.source == 'darkhub-seedream45'
+        && request.resource.data.packageName == 'darkHUB Seedream 4.5';
+      allow update, delete: if false;
+    }
+  }
+}

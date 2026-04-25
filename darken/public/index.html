@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>darken Admin Feed</title>
+    <link rel="stylesheet" href="/styles.css?v=20260424b" />
+  </head>
+  <body>
+    <div class="noise"></div>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand-cluster">
+          <div class="brand-mark">dh</div>
+          <div class="brand-copy">
+            <p class="brand-name">darkHUB</p>
+            <p class="brand-subtitle">Seedream 4.5 remote gallery</p>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <div class="project-pill">
+            <span>project</span>
+            <strong>darken-seedream-admin</strong>
+          </div>
+          <div id="connectionBadge" class="connection-badge offline">not connected</div>
+          <button id="loginButton" class="action-button primary">Sign in with Google</button>
+          <button id="logoutButton" class="action-button ghost" hidden>Sign out</button>
+        </div>
+      </header>
+
+      <section class="overview-bar">
+        <div class="overview-copy">
+          <span class="section-kicker">Live monitor</span>
+          <h1>Tracked generations, prompts, seeds and previews in one calm workspace.</h1>
+        </div>
+        <div class="stat-strip">
+          <article class="stat-card">
+            <span>Total</span>
+            <strong id="totalCount">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Completed</span>
+            <strong id="successCount">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Failed</span>
+            <strong id="failedCount">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Clients</span>
+            <strong id="clientCount">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Last sync</span>
+            <strong id="lastSync">--</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <aside class="control-panel">
+          <section class="panel-card status-panel">
+            <div class="panel-header">
+              <span class="section-kicker">Status</span>
+              <h2>Session control</h2>
+            </div>
+            <p id="statusText" class="panel-copy">Loading configuration...</p>
+          </section>
+
+          <section class="panel-card search-panel">
+            <label class="field-label" for="searchInput">Search feed</label>
+            <input id="searchInput" class="search-input" type="search" placeholder="prompt, seed, client..." />
+          </section>
+
+          <section class="panel-card mini-panel">
+            <div class="mini-grid">
+              <div class="mini-stat">
+                <span>Viewer</span>
+                <strong id="activeUser">signed out</strong>
+              </div>
+              <div class="mini-stat">
+                <span>Selection</span>
+                <strong id="selectedMode">--</strong>
+              </div>
+              <div class="mini-stat">
+                <span>Seed</span>
+                <strong id="selectedSeed">--</strong>
+              </div>
+              <div class="mini-stat">
+                <span>Aspect</span>
+                <strong id="selectedAspect">--</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel-card notes-panel">
+            <div class="panel-header compact">
+              <span class="section-kicker">Prompt pulse</span>
+              <h3>Selected prompt</h3>
+            </div>
+            <p id="selectedPrompt" class="copy-block">No generation selected yet.</p>
+          </section>
+
+          <section class="panel-card notes-panel subtle">
+            <div class="panel-header compact">
+              <span class="section-kicker">Summary</span>
+              <h3>Operator note</h3>
+            </div>
+            <p id="selectedSummary" class="copy-block">Feed summary will appear here.</p>
+          </section>
+
+          <section class="panel-card pulse-panel">
+            <div class="panel-header compact">
+              <span class="section-kicker">Recent pulse</span>
+              <h3>Latest activity</h3>
+            </div>
+            <div id="pulseList" class="pulse-list"></div>
+          </section>
+        </aside>
+
+        <section class="gallery-panel">
+          <div class="gallery-header">
+            <div>
+              <span class="section-kicker">Gallery</span>
+              <h2>Remote image cards</h2>
+            </div>
+            <span id="feedCountLabel" class="feed-count">0 items</span>
+          </div>
+
+          <div id="galleryGrid" class="gallery-grid" aria-live="polite"></div>
+        </section>
+      </section>
+    </main>
+
+    <div id="detailModal" class="detail-modal" hidden>
+      <div class="modal-backdrop" data-close-modal="true"></div>
+      <section class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <header class="modal-header">
+          <div>
+            <span class="section-kicker">Generation detail</span>
+            <h2 id="modalTitle">Tracked generation</h2>
+          </div>
+          <button id="closeModalButton" class="icon-button close-button" type="button" aria-label="Close detail view">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+        </header>
+
+        <div class="modal-stage">
+          <div id="modalImageStage" class="modal-image-stage"></div>
+        </div>
+
+        <div class="modal-meta-grid">
+          <article class="meta-card">
+            <span>Seed</span>
+            <div class="meta-inline">
+              <strong id="modalSeed">--</strong>
+              <button class="icon-button" type="button" data-copy-field="seed" aria-label="Copy seed">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="9" y="9" width="10" height="10" rx="2" />
+                  <rect x="5" y="5" width="10" height="10" rx="2" />
+                </svg>
+              </button>
+            </div>
+          </article>
+          <article class="meta-card">
+            <span>Client</span>
+            <strong id="modalClient">--</strong>
+          </article>
+          <article class="meta-card">
+            <span>Aspect</span>
+            <strong id="modalAspect">--</strong>
+          </article>
+          <article class="meta-card">
+            <span>Status</span>
+            <strong id="modalStatus">--</strong>
+          </article>
+          <article class="meta-card">
+            <span>Mode</span>
+            <strong id="modalMode">--</strong>
+          </article>
+          <article class="meta-card">
+            <span>Created</span>
+            <strong id="modalDate">--</strong>
+          </article>
+        </div>
+
+        <div class="modal-copy-grid">
+          <section class="detail-card">
+            <div class="detail-head">
+              <span class="section-kicker">Prompt</span>
+              <button class="icon-button" type="button" data-copy-field="prompt" aria-label="Copy prompt">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="9" y="9" width="10" height="10" rx="2" />
+                  <rect x="5" y="5" width="10" height="10" rx="2" />
+                </svg>
+              </button>
+            </div>
+            <p id="modalPrompt">--</p>
+          </section>
+
+          <section class="detail-card">
+            <div class="detail-head">
+              <span class="section-kicker">Negative prompt</span>
+            </div>
+            <p id="modalNegative">--</p>
+          </section>
+
+          <section class="detail-card detail-card-wide">
+            <div class="detail-head">
+              <span class="section-kicker">Summary</span>
+            </div>
+            <p id="modalSummary">--</p>
+            <div class="detail-footer">
+              <span>Task: <strong id="modalTaskId">--</strong></span>
+              <span>Metadata: <strong id="modalMetadata">--</strong></span>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+
+    <script src="/config.js?v=20260423c"></script>
+    <script type="module" src="/app.js?v=20260423c"></script>
+  </body>
+</html>

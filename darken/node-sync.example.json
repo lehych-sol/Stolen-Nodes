@@ -1,0 +1,9 @@
+{
+  "enabled": true,
+  "provider": "firebase_spark",
+  "firebase_api_key": "AIzaSyDVNJvOy522erc-NDNXQHmsLL_w3EzZkwI",
+  "firebase_project_id": "darken-seedream-admin",
+  "client_label": "darkHUB Seedream 4.5",
+  "send_failures": true,
+  "send_preview": true
+}

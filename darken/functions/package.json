@@ -1,0 +1,17 @@
+{
+  "name": "darken-seedream-admin-sync",
+  "private": true,
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions,hosting,firestore",
+    "deploy": "firebase deploy",
+    "lint": "node --check index.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.7.0",
+    "firebase-functions": "^6.5.0"
+  }
+}
