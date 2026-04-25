@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "darkhub-seedream45"
+version = "0.0.1"
+description = "ComfyUI custom node for Freepik Seedream v4.5 image generation and image editing."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "darkHUB" }]
+keywords = ["comfyui", "custom-node", "freepik", "seedream", "image-generation", "image-editing"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Multimedia :: Graphics",
+]
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[project.urls]
+Repository = "https://github.com/Cyber05CC/ComfyUI-darkHUB-Seedream4.5"
+Documentation = "https://github.com/Cyber05CC/ComfyUI-darkHUB-Seedream4.5#readme"
+"Bug Tracker" = "https://github.com/Cyber05CC/ComfyUI-darkHUB-Seedream4.5/issues"
+
+[tool.comfy]
+PublisherId = "darken"
+DisplayName = "darkHUB Seedream 4.5"
+requires-comfyui = ">=0.3.0"
